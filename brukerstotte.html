@@ -279,44 +279,6 @@
     </div>
   </main>
 </div>
-<script>
-function sendMelding() {
-  const navn = document.getElementById('kontakt-navn').value.trim();
-  const epost = document.getElementById('kontakt-epost').value.trim();
-  const emne = document.getElementById('kontakt-emne').value;
-  const melding = document.getElementById('kontakt-melding').value.trim();
-  const epostFeil = document.getElementById('epost-feil');
-
-  // Validate email
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(epost);
-  if (!emailOk) {
-    epostFeil.classList.remove('hidden');
-    document.getElementById('kontakt-epost').style.borderColor = '#ef4444';
-    document.getElementById('kontakt-epost').focus();
-    return;
-  }
-  epostFeil.classList.add('hidden');
-  document.getElementById('kontakt-epost').style.borderColor = '';
-
-  if (!navn || !emne || !melding) {
-    alert('Fyll ut alle feltene før du sender.');
-    return;
-  }
-
-  // Show success
-  document.getElementById('suksess-epost').textContent = epost;
-  document.getElementById('kontakt-form').classList.add('hidden');
-  document.getElementById('kontakt-suksess').classList.remove('hidden');
-}
-
-function resetKontaktForm() {
-  document.getElementById('kontakt-navn').value = '';
-  document.getElementById('kontakt-epost').value = '';
-  document.getElementById('kontakt-emne').value = '';
-  document.getElementById('kontakt-melding').value = '';
-  document.getElementById('kontakt-form').classList.remove('hidden');
-  document.getElementById('kontakt-suksess').classList.add('hidden');
-<!-- Toast notification -->
 <div id="toast" class="toast toast-success">
   <span class="ms" style="font-size:18px" id="toastIcon">check_circle</span>
   <span id="toastMsg"></span>
@@ -333,6 +295,55 @@ function showToast(msg, type) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
+function sendMelding() {
+  const navn = document.getElementById('kontakt-navn').value.trim();
+  const epost = document.getElementById('kontakt-epost').value.trim();
+  const emne = document.getElementById('kontakt-emne').value;
+  const melding = document.getElementById('kontakt-melding').value.trim();
+  const epostFeil = document.getElementById('epost-feil');
+
+  if (!navn) { showToast('Fyll inn fullt navn.', 'error'); return; }
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(epost);
+  if (!emailOk) {
+    epostFeil.classList.remove('hidden');
+    document.getElementById('kontakt-epost').style.borderColor = '#ef4444';
+    document.getElementById('kontakt-epost').focus();
+    showToast('Skriv inn en gyldig e-postadresse.', 'error');
+    return;
+  }
+  epostFeil.classList.add('hidden');
+  document.getElementById('kontakt-epost').style.borderColor = '';
+
+  if (!emne) { showToast('Velg en kategori.', 'error'); return; }
+  if (!melding) { showToast('Skriv en melding.', 'error'); return; }
+
+  const btn = document.getElementById('kontakt-send-btn');
+  const originalHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.style.background = '#22c55e';
+  btn.style.boxShadow = '0 4px 14px rgba(34,197,94,0.3)';
+  btn.innerHTML = '<span class="ms" style="font-size:18px">check_circle</span> Sendt!';
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.style.background = '';
+    btn.style.boxShadow = '';
+    btn.innerHTML = originalHTML;
+    document.getElementById('suksess-epost').textContent = epost;
+    document.getElementById('kontakt-form').classList.add('hidden');
+    document.getElementById('kontakt-suksess').classList.remove('hidden');
+  }, 1000);
+}
+
+function resetKontaktForm() {
+  document.getElementById('kontakt-navn').value = '';
+  document.getElementById('kontakt-epost').value = '';
+  document.getElementById('kontakt-emne').value = '';
+  document.getElementById('kontakt-melding').value = '';
+  document.getElementById('kontakt-form').classList.remove('hidden');
+  document.getElementById('kontakt-suksess').classList.add('hidden');
+}
 </script>
 </body>
 </html>
