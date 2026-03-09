@@ -573,6 +573,7 @@ function submitAlert() {
   saveAlerts();
   renderAlerts();
   closeModal();
+  showToast('Varsel opprettet! ✓', 'green');
 }
 
 function askDelete(id) {
@@ -589,11 +590,23 @@ function confirmDelete(id) {
   saveAlerts();
   renderAlerts();
   closeConfirm();
+  showToast('Varsel slettet', 'red');
 }
 
 function toggleAlert(id, active) {
   const a = alerts.find(x => x.id === id);
-  if (a) { a.active = active; saveAlerts(); renderAlerts(); }
+  if (a) { a.active = active; saveAlerts(); renderAlerts(); showToast(active ? 'Varsel aktivert ✓' : 'Varsel deaktivert', active ? 'green' : 'red'); }
+}
+
+function showToast(msg, color) {
+  const t = document.createElement('div');
+  const bg = color === 'green' ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)';
+  const border = color === 'green' ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)';
+  const text = color === 'green' ? '#86efac' : '#fca5a5';
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;z-index:9999;background:${bg};border:1px solid ${border};color:${text};padding:12px 20px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,0.4);pointer-events:none;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
 }
 
 window.addEventListener('DOMContentLoaded', () => {
