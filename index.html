@@ -162,6 +162,17 @@
       overflow: hidden;
     }
 
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.35;
+    }
+
     .hero::before {
       content: '';
       position: absolute;
@@ -171,6 +182,12 @@
       bottom: 0;
       background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
       pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero .container {
+      position: relative;
+      z-index: 2;
     }
 
     .hero-grid {
@@ -1099,6 +1116,9 @@
 
   <!-- HERO -->
   <section class="hero">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="EARTH 3D VIDEO 15MB.mp4" type="video/mp4">
+    </video>
     <div class="container">
       <div class="hero-grid">
         <div>
