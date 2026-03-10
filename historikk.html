@@ -28,9 +28,11 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
     <div class="p-5 flex items-center gap-3">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
@@ -85,6 +87,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -289,6 +292,16 @@
   </div><!-- /max-w-5xl -->
   </main>
 </div>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+}
+</script>
 </body>
 </html>
 
