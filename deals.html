@@ -126,18 +126,18 @@
 
 <script>
 const deals = [
-  { from: 'Oslo', fromCode: 'OSL', to: 'Bangkok', toCode: 'BKK', flag: '🇹🇭', price: 2489, orig: 4700, discount: 47, dates: 'Mar–Apr 2026', airline: 'Thai Airways', direct: true, origin: 'OSL' },
-  { from: 'Bergen', fromCode: 'BGO', to: 'London', toCode: 'LHR', flag: '🇬🇧', price: 489, orig: 1020, discount: 52, dates: 'Mars 2026', airline: 'Norwegian', direct: true, origin: 'BGO' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'New York', toCode: 'JFK', flag: '🇺🇸', price: 2890, orig: 4900, discount: 41, dates: 'Apr–Mai 2026', airline: 'SAS', direct: true, origin: 'OSL' },
-  { from: 'Trondheim', fromCode: 'TRD', to: 'Barcelona', toCode: 'BCN', flag: '🇪🇸', price: 699, orig: 1130, discount: 38, dates: 'April 2026', airline: 'Norwegian', direct: false, origin: 'TRD' },
-  { from: 'Stavanger', fromCode: 'SVG', to: 'Amsterdam', toCode: 'AMS', flag: '🇳🇱', price: 549, orig: 980, discount: 44, dates: 'Mars 2026', airline: 'KLM', direct: false, origin: 'SVG' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Tokyo', toCode: 'HND', flag: '🇯🇵', price: 3490, orig: 5720, discount: 39, dates: 'Mai–Jun 2026', airline: 'ANA', direct: false, origin: 'OSL' },
-  { from: 'Tromsø', fromCode: 'TOS', to: 'Reykjavik', toCode: 'KEF', flag: '🇮🇸', price: 890, orig: 1370, discount: 35, dates: 'April 2026', airline: 'Icelandair', direct: true, origin: 'TOS' },
-  { from: 'Torp', fromCode: 'TRF', to: 'Alicante', toCode: 'ALC', flag: '🇪🇸', price: 399, orig: 814, discount: 51, dates: 'Mar–Apr 2026', airline: 'Ryanair', direct: true, origin: 'TRF' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Dubai', toCode: 'DXB', flag: '🇦🇪', price: 1990, orig: 3490, discount: 43, dates: 'April 2026', airline: 'Emirates', direct: true, origin: 'OSL' },
-  { from: 'Bergen', fromCode: 'BGO', to: 'Roma', toCode: 'FCO', flag: '🇮🇹', price: 599, orig: 1110, discount: 46, dates: 'Mars 2026', airline: 'SAS', direct: false, origin: 'BGO' },
-  { from: 'Trondheim', fromCode: 'TRD', to: 'Paris', toCode: 'CDG', flag: '🇫🇷', price: 649, orig: 1082, discount: 40, dates: 'April 2026', airline: 'Air France', direct: false, origin: 'TRD' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Bali', toCode: 'DPS', flag: '🇮🇩', price: 4290, orig: 6703, discount: 36, dates: 'Mai 2026', airline: 'Qatar Airways', direct: false, origin: 'OSL' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Bangkok', toCode: 'BKK', flag: '🇹🇭', price: 2489, orig: 4700, discount: 47, dates: 'Mar–Apr 2026', airline: 'Thai Airways', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T07:15:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+BKK' },
+  { from: 'Bergen', fromCode: 'BGO', to: 'London', toCode: 'LHR', flag: '🇬🇧', price: 489, orig: 1020, discount: 52, dates: 'Mars 2026', airline: 'Norwegian', direct: true, origin: 'BGO', type: 'tur-retur', foundAt: '2026-03-10T08:30:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+BGO+to+LHR' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'New York', toCode: 'JFK', flag: '🇺🇸', price: 2890, orig: 4900, discount: 41, dates: 'Apr–Mai 2026', airline: 'SAS', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T06:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+JFK' },
+  { from: 'Trondheim', fromCode: 'TRD', to: 'Barcelona', toCode: 'BCN', flag: '🇪🇸', price: 699, orig: 1130, discount: 38, dates: 'April 2026', airline: 'Norwegian', direct: false, origin: 'TRD', type: 'tur-retur', foundAt: '2026-03-10T09:45:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRD+to+BCN' },
+  { from: 'Stavanger', fromCode: 'SVG', to: 'Amsterdam', toCode: 'AMS', flag: '🇳🇱', price: 549, orig: 980, discount: 44, dates: 'Mars 2026', airline: 'KLM', direct: false, origin: 'SVG', type: 'tur-retur', foundAt: '2026-03-10T10:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+SVG+to+AMS' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Tokyo', toCode: 'HND', flag: '🇯🇵', price: 3490, orig: 5720, discount: 39, dates: 'Mai–Jun 2026', airline: 'ANA', direct: false, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-09T14:20:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+HND' },
+  { from: 'Tromsø', fromCode: 'TOS', to: 'Reykjavik', toCode: 'KEF', flag: '🇮🇸', price: 890, orig: 1370, discount: 35, dates: 'April 2026', airline: 'Icelandair', direct: true, origin: 'TOS', type: 'tur-retur', foundAt: '2026-03-09T11:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TOS+to+KEF' },
+  { from: 'Torp', fromCode: 'TRF', to: 'Alicante', toCode: 'ALC', flag: '🇪🇸', price: 399, orig: 814, discount: 51, dates: 'Mar–Apr 2026', airline: 'Ryanair', direct: true, origin: 'TRF', type: 'tur-retur', foundAt: '2026-03-10T08:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRF+to+ALC' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Dubai', toCode: 'DXB', flag: '🇦🇪', price: 1990, orig: 3490, discount: 43, dates: 'April 2026', airline: 'Emirates', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T05:30:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+DXB' },
+  { from: 'Bergen', fromCode: 'BGO', to: 'Roma', toCode: 'FCO', flag: '🇮🇹', price: 599, orig: 1110, discount: 46, dates: 'Mars 2026', airline: 'SAS', direct: false, origin: 'BGO', type: 'tur-retur', foundAt: '2026-03-09T16:45:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+BGO+to+FCO' },
+  { from: 'Trondheim', fromCode: 'TRD', to: 'Paris', toCode: 'CDG', flag: '🇫🇷', price: 649, orig: 1082, discount: 40, dates: 'April 2026', airline: 'Air France', direct: false, origin: 'TRD', type: 'tur-retur', foundAt: '2026-03-09T13:10:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRD+to+CDG' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Bali', toCode: 'DPS', flag: '🇮🇩', price: 4290, orig: 6703, discount: 36, dates: 'Mai 2026', airline: 'Qatar Airways', direct: false, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-09T09:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+DPS' },
 ];
 
 let currentFilter = 'alle';
@@ -156,14 +156,17 @@ function filterDeals(filter, btn) {
 function renderDeals() {
   const filtered = currentFilter === 'alle' ? deals : deals.filter(d => d.origin === currentFilter);
   const grid = document.getElementById('dealsGrid');
-  grid.innerHTML = filtered.map((d, i) => `
-    <div onclick="openDeal(${i})" class="deal-card bg-[#111] border border-[#1e1e1e] rounded-xl p-3.5 transition-all duration-200 cursor-pointer" data-idx="${i}">
+  grid.innerHTML = filtered.map(d => `
+    <div onclick="window.open('${d.bookingLink}', '_blank')" class="deal-card bg-[#111] border border-[#1e1e1e] rounded-xl p-3.5 transition-all duration-200 cursor-pointer">
       <div class="flex items-start justify-between mb-2">
         <div>
           <span class="text-sm font-black">${d.to} ${d.flag}</span>
           <p class="text-[11px] text-slate-500 mt-0.5">${d.from} → ${d.toCode}</p>
         </div>
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">-${d.discount}%</span>
+        <div class="flex items-center gap-1.5">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">-${d.discount}%</span>
+          <span class="ms text-slate-600" style="font-size:14px">open_in_new</span>
+        </div>
       </div>
       <div class="flex items-center gap-1 bg-white/5 border border-white/10 rounded-md px-2 py-1.5 mb-2">
         <span class="ms text-[#ff6b00]" style="font-size:13px">calendar_month</span>
@@ -171,82 +174,22 @@ function renderDeals() {
       </div>
       <p class="text-xl font-black text-[#ff6b00] leading-none">${d.price.toLocaleString('no')} kr</p>
       <p class="text-[11px] text-slate-600 mt-0.5 line-through">${d.orig.toLocaleString('no')} kr</p>
-      <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#1e1e1e] text-[11px] text-slate-500">
-        <span class="ms" style="font-size:13px">airlines</span>
-        <span>${d.airline} · ${d.direct ? 'Direktefly' : '1 stopp'}</span>
+      <div class="flex items-center justify-between mt-2 pt-2 border-t border-[#1e1e1e]">
+        <div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+          <span class="ms" style="font-size:13px">airlines</span>
+          <span>${d.airline} · ${d.direct ? 'Direktefly' : '1 stopp'}</span>
+        </div>
+        <button onclick="event.stopPropagation(); window.location.href='varsler.html?to='+encodeURIComponent('${d.to}')+'&code=${d.toCode}&flag='+encodeURIComponent('${d.flag}')" class="flex items-center gap-1 text-[10px] font-semibold text-slate-500 hover:text-[#ff6b00] transition-colors px-2 py-1 rounded-md hover:bg-[#ff6b00]/10">
+          <span class="ms" style="font-size:12px">notifications</span>Varsel
+        </button>
       </div>
     </div>
   `).join('');
 }
 
-let filteredDealsCache = [];
-
-function openDeal(idx) {
-  const filtered = currentFilter === 'alle' ? deals : deals.filter(d => d.origin === currentFilter);
-  const d = filtered[idx];
-  if (!d) return;
-  document.getElementById('modalFlag').textContent = d.flag;
-  document.getElementById('modalRoute').textContent = d.from + ' (' + d.fromCode + ') → ' + d.to + ' (' + d.toCode + ')';
-  document.getElementById('modalPrice').textContent = d.price.toLocaleString('no') + ' kr';
-  document.getElementById('modalOrig').textContent = d.orig.toLocaleString('no') + ' kr';
-  document.getElementById('modalDiscount').textContent = '-' + d.discount + '%';
-  document.getElementById('modalDates').textContent = d.dates;
-  document.getElementById('modalAirline').textContent = d.airline;
-  document.getElementById('modalStops').textContent = d.direct ? 'Direktefly' : '1 stopp';
-  document.getElementById('dealModal').style.display = 'flex';
-}
-
 renderDeals();
 </script>
-<!-- Deal detail modal -->
-<div id="dealModal" onclick="if(event.target===this)document.getElementById('dealModal').style.display='none'" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-  <div style="background:#111;border:1px solid #1e1e1e;border-radius:20px;padding:32px;max-width:440px;width:90%;margin:auto;position:relative;">
-    <button onclick="document.getElementById('dealModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:22px;line-height:1;">✕</button>
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-      <div style="font-size:48px;line-height:1;" id="modalFlag">🌍</div>
-      <div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:4px;">FLYRUTE</p>
-        <p style="font-size:16px;font-weight:800;color:white;" id="modalRoute">Oslo → Bangkok</p>
-      </div>
-    </div>
-    <div style="background:#050505;border:1px solid #1e1e1e;border-radius:12px;padding:20px;margin-bottom:20px;">
-      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
-        <span style="font-size:32px;font-weight:900;color:#ff6b00;" id="modalPrice">2 489 kr</span>
-        <span style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:line-through;" id="modalOrig">4 700 kr</span>
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;" id="modalDiscount">-47%</span>
-      </div>
-      <p style="font-size:12px;color:rgba(255,255,255,0.4);">per person, tur-retur</p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">PERIODE</p>
-        <p style="font-size:13px;font-weight:700;" id="modalDates">Mar–Apr 2026</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">FLYSELSKAP</p>
-        <p style="font-size:13px;font-weight:700;" id="modalAirline">Thai Airways</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">STOPP</p>
-        <p style="font-size:13px;font-weight:700;" id="modalStops">Direktefly</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">BOOKING</p>
-        <p style="font-size:13px;font-weight:700;color:#22c55e;">Tilgjengelig nå</p>
-      </div>
-    </div>
-    <button onclick="addToAlerts()" style="width:100%;padding:14px;border-radius:12px;background:#ff6b00;color:white;font-weight:800;font-size:15px;border:none;cursor:pointer;margin-bottom:10px;transition:background 0.2s;" onmouseover="this.style.background='#e55f00'" onmouseout="this.style.background='#ff6b00'">
-      Legg til varsel for denne ruten
-    </button>
-    <p style="text-center;font-size:12px;color:rgba(255,255,255,0.3);text-align:center;">Book direkte hos flyselskapet — FlyDeals tar ingen provisjon</p>
-  </div>
 </div>
 
-<script>
-function addToAlerts() {
-  document.getElementById('dealModal').style.display = 'none';
-  window.location.href = 'varsler.html';
-}
-</script>
 </body>
 </html>
