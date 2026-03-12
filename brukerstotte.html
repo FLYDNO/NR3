@@ -36,10 +36,12 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
-    <div class="p-5 flex items-center gap-3">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <a href="index.html" class="p-5 flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
       </div>
@@ -47,7 +49,7 @@
         <h1 class="text-base font-bold leading-tight text-white">FlyDeals</h1>
         <p class="text-[11px] text-slate-500 font-medium">Varsler deg om flydeals</p>
       </div>
-    </div>
+    </a>
     <nav class="flex-1 px-3 space-y-0.5 mt-1">
       <a href="deals.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-slate-400 hover:text-[#ff6b00] hover:bg-[#ff6b00]/5 transition-colors">
         <span class="ms" style="font-size:18px">local_offer</span>
@@ -93,6 +95,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -103,8 +106,7 @@
         </button>
         <div class="w-px h-6 bg-[#2e2e2e] mx-1"></div>
         <button onclick="window.location.href='login.html'" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1e1e1e] text-sm font-medium text-slate-400 hover:bg-[#111] hover:text-slate-200 transition-colors">
-          <span class="ms" style="font-size:16px">logout</span>
-          Logg ut
+          <span class="ms" style="font-size:16px">logout</span><span class="hidden sm:inline ml-1">Logg ut</span>
         </button>
       </div>
     </div>
@@ -231,16 +233,6 @@
             <label class="text-sm font-medium text-slate-300">Emne</label>
             <select id="kontakt-emne" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-400">
               <option value="">Velg kategori</option>
-            <input id="contactName" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-100 placeholder:text-slate-600" placeholder="Ola Nordmann" type="text"/>
-          </div>
-          <div class="space-y-1.5">
-            <label class="text-sm font-medium text-slate-300">E-postadresse</label>
-            <input id="contactEmail" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-100 placeholder:text-slate-600" placeholder="ola@eksempel.no" type="email"/>
-          </div>
-          <div class="md:col-span-2 space-y-1.5">
-            <label class="text-sm font-medium text-slate-300">Emne</label>
-            <select id="contactTopic" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-2.5 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-400">
-              <option>Velg kategori</option>
               <option>Spørsmål om abonnement</option>
               <option>Problem med deals</option>
               <option>Teknisk problem</option>
@@ -249,20 +241,15 @@
           </div>
           <div class="md:col-span-2 space-y-1.5">
             <label class="text-sm font-medium text-slate-300">Melding</label>
-            <textarea id="kontakt-melding" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-100 placeholder:text-slate-600 resize-none" rows="4" placeholder="Beskriv spørsmålet ditt..."></textarea>
+            <textarea id="kontakt-melding" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-100 placeholder:text-slate-600 resize-none" rows="4" placeholder="Beskriv sporsmalet ditt..."></textarea>
           </div>
           <div class="md:col-span-2">
             <button id="kontakt-send-btn" onclick="sendMelding()" class="flex items-center gap-2 bg-[#ff6b00] hover:bg-[#e55f00] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-[#ff6b00]/20 text-sm">
-            <textarea id="contactMessage" class="w-full bg-[#050505] border border-[#1e1e1e] rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-[#ff6b00]/20 focus:border-[#ff6b00] outline-none text-slate-100 placeholder:text-slate-600 resize-none" rows="4" placeholder="Beskriv spørsmålet ditt..."></textarea>
-          </div>
-          <div class="md:col-span-2">
-            <button onclick="sendMessage()" id="sendBtn" class="flex items-center gap-2 bg-[#ff6b00] hover:bg-[#e55f00] text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-[#ff6b00]/20 text-sm">
               Send melding
               <span class="ms" style="font-size:18px">send</span>
             </button>
           </div>
         </div>
-        <!-- Success state -->
         <div id="kontakt-suksess" class="hidden text-center py-8">
           <div class="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2)">
             <span class="ms text-green-400" style="font-size:28px">check_circle</span>
@@ -294,44 +281,6 @@
     </div>
   </main>
 </div>
-<script>
-function sendMelding() {
-  const navn = document.getElementById('kontakt-navn').value.trim();
-  const epost = document.getElementById('kontakt-epost').value.trim();
-  const emne = document.getElementById('kontakt-emne').value;
-  const melding = document.getElementById('kontakt-melding').value.trim();
-  const epostFeil = document.getElementById('epost-feil');
-
-  // Validate email
-  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(epost);
-  if (!emailOk) {
-    epostFeil.classList.remove('hidden');
-    document.getElementById('kontakt-epost').style.borderColor = '#ef4444';
-    document.getElementById('kontakt-epost').focus();
-    return;
-  }
-  epostFeil.classList.add('hidden');
-  document.getElementById('kontakt-epost').style.borderColor = '';
-
-  if (!navn || !emne || !melding) {
-    alert('Fyll ut alle feltene før du sender.');
-    return;
-  }
-
-  // Show success
-  document.getElementById('suksess-epost').textContent = epost;
-  document.getElementById('kontakt-form').classList.add('hidden');
-  document.getElementById('kontakt-suksess').classList.remove('hidden');
-}
-
-function resetKontaktForm() {
-  document.getElementById('kontakt-navn').value = '';
-  document.getElementById('kontakt-epost').value = '';
-  document.getElementById('kontakt-emne').value = '';
-  document.getElementById('kontakt-melding').value = '';
-  document.getElementById('kontakt-form').classList.remove('hidden');
-  document.getElementById('kontakt-suksess').classList.add('hidden');
-<!-- Toast notification -->
 <div id="toast" class="toast toast-success">
   <span class="ms" style="font-size:18px" id="toastIcon">check_circle</span>
   <span id="toastMsg"></span>
@@ -348,30 +297,64 @@ function showToast(msg, type) {
   setTimeout(() => t.classList.remove('show'), 3500);
 }
 
-function sendMessage() {
-  const name = document.getElementById('contactName').value.trim();
-  const email = document.getElementById('contactEmail').value.trim();
-  const topic = document.getElementById('contactTopic').value;
-  const message = document.getElementById('contactMessage').value.trim();
+function sendMelding() {
+  const navn = document.getElementById('kontakt-navn').value.trim();
+  const epost = document.getElementById('kontakt-epost').value.trim();
+  const emne = document.getElementById('kontakt-emne').value;
+  const melding = document.getElementById('kontakt-melding').value.trim();
+  const epostFeil = document.getElementById('epost-feil');
 
-  if (!name) { showToast('Vennligst skriv inn fullt navn.', 'error'); return; }
-  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Vennligst oppgi en gyldig e-postadresse.', 'error'); return; }
-  if (topic === 'Velg kategori') { showToast('Vennligst velg en kategori.', 'error'); return; }
-  if (!message) { showToast('Vennligst skriv en melding.', 'error'); return; }
+  if (!navn) { showToast('Fyll inn fullt navn.', 'error'); return; }
 
-  const btn = document.getElementById('sendBtn');
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(epost);
+  if (!emailOk) {
+    epostFeil.classList.remove('hidden');
+    document.getElementById('kontakt-epost').style.borderColor = '#ef4444';
+    document.getElementById('kontakt-epost').focus();
+    showToast('Skriv inn en gyldig e-postadresse.', 'error');
+    return;
+  }
+  epostFeil.classList.add('hidden');
+  document.getElementById('kontakt-epost').style.borderColor = '';
+
+  if (!emne) { showToast('Velg en kategori.', 'error'); return; }
+  if (!melding) { showToast('Skriv en melding.', 'error'); return; }
+
+  const btn = document.getElementById('kontakt-send-btn');
+  const originalHTML = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span class="ms" style="font-size:18px">hourglass_empty</span> Sender...';
+  btn.style.background = '#22c55e';
+  btn.style.boxShadow = '0 4px 14px rgba(34,197,94,0.3)';
+  btn.innerHTML = '<span class="ms" style="font-size:18px">check_circle</span> Sendt!';
 
   setTimeout(() => {
-    document.getElementById('contactName').value = '';
-    document.getElementById('contactEmail').value = '';
-    document.getElementById('contactTopic').value = 'Velg kategori';
-    document.getElementById('contactMessage').value = '';
     btn.disabled = false;
-    btn.innerHTML = 'Send melding <span class="ms" style="font-size:18px">send</span>';
-    showToast('Meldingen er sendt! Vi svarer innen 24 timer.', 'success');
-  }, 800);
+    btn.style.background = '';
+    btn.style.boxShadow = '';
+    btn.innerHTML = originalHTML;
+    document.getElementById('suksess-epost').textContent = epost;
+    document.getElementById('kontakt-form').classList.add('hidden');
+    document.getElementById('kontakt-suksess').classList.remove('hidden');
+  }, 1000);
+}
+
+function resetKontaktForm() {
+  document.getElementById('kontakt-navn').value = '';
+  document.getElementById('kontakt-epost').value = '';
+  document.getElementById('kontakt-emne').value = '';
+  document.getElementById('kontakt-melding').value = '';
+  document.getElementById('kontakt-form').classList.remove('hidden');
+  document.getElementById('kontakt-suksess').classList.add('hidden');
+}
+</script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
 }
 </script>
 </body>

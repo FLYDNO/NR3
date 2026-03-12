@@ -30,10 +30,12 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
-    <div class="p-5 flex items-center gap-3">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <a href="index.html" class="p-5 flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
       </div>
@@ -41,7 +43,7 @@
         <h1 class="text-base font-bold leading-tight text-white">FlyDeals</h1>
         <p class="text-[11px] text-slate-500 font-medium">Varsler deg om flydeals</p>
       </div>
-    </div>
+    </a>
     <nav class="flex-1 px-3 space-y-0.5 mt-1">
       <a href="deals.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-slate-400 hover:text-[#ff6b00] hover:bg-[#ff6b00]/5 transition-colors">
         <span class="ms" style="font-size:18px">local_offer</span>
@@ -87,6 +89,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -97,8 +100,7 @@
         </button>
         <div class="w-px h-6 bg-[#2e2e2e] mx-1"></div>
         <button onclick="window.location.href='login.html'" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1e1e1e] text-sm font-medium text-slate-400 hover:bg-[#111] hover:text-slate-200 transition-colors">
-          <span class="ms" style="font-size:16px">logout</span>
-          Logg ut
+          <span class="ms" style="font-size:16px">logout</span><span class="hidden sm:inline ml-1">Logg ut</span>
         </button>
       </div>
     </div>
@@ -116,13 +118,23 @@
       </div>
 
       <!-- Region filters -->
-      <div id="regionFilters" class="flex flex-wrap gap-2">
+      <div id="regionFilters" class="flex flex-wrap gap-2 mb-3">
         <button onclick="filterRegion('alle', this)" class="region-btn px-4 py-2 rounded-full text-sm font-semibold bg-[#ff6b00] text-white" data-region="alle">Alle</button>
         <button onclick="filterRegion('europa', this)" class="region-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all" data-region="europa">🌍 Europa</button>
         <button onclick="filterRegion('asia', this)" class="region-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all" data-region="asia">🌏 Asia</button>
         <button onclick="filterRegion('america', this)" class="region-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all" data-region="america">🌎 Amerika</button>
         <button onclick="filterRegion('africa', this)" class="region-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all" data-region="africa">🌍 Afrika</button>
         <button onclick="filterRegion('norden', this)" class="region-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all" data-region="norden">❄️ Norden</button>
+      </div>
+
+      <!-- Month filters -->
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="flex items-center gap-1 text-xs text-slate-600 font-medium pr-1"><span class="ms" style="font-size:14px">calendar_month</span>Måned:</span>
+        <button onclick="filterMonth('alle', this)" class="month-btn active px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white border border-white/20 transition-all">Alle</button>
+        <button onclick="filterMonth('mar', this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Mars</button>
+        <button onclick="filterMonth('apr', this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">April</button>
+        <button onclick="filterMonth('mai', this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Mai</button>
+        <button onclick="filterMonth('jun', this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Juni</button>
       </div>
 
       <!-- Featured destinations -->
@@ -134,7 +146,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
 
           <!-- Card: Barcelona -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="europa" onclick="opprettVarsel('Barcelona','BCN','🇪🇸')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="europa" data-month="apr" onclick="opprettVarsel('Barcelona','BCN','🇪🇸')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&q=80" alt="Barcelona"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -168,7 +180,7 @@
           </div>
 
           <!-- Card: London -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="europa" onclick="opprettVarsel('London','LHR','🇬🇧')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="europa" data-month="mar" onclick="opprettVarsel('London','LHR','🇬🇧')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=600&q=80" alt="London"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -199,7 +211,7 @@
           </div>
 
           <!-- Card: Bangkok -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" onclick="opprettVarsel('Bangkok','BKK','🇹🇭')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" data-month="mar apr" onclick="opprettVarsel('Bangkok','BKK','🇹🇭')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=600&q=80" alt="Bangkok"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -230,7 +242,7 @@
           </div>
 
           <!-- Card: Dubai -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" onclick="opprettVarsel('Dubai','DXB','🇦🇪')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" data-month="apr" onclick="opprettVarsel('Dubai','DXB','🇦🇪')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&q=80" alt="Dubai"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -261,7 +273,7 @@
           </div>
 
           <!-- Card: New York -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="america" onclick="opprettVarsel('New York','JFK','🇺🇸')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="america" data-month="apr mai" onclick="opprettVarsel('New York','JFK','🇺🇸')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=600&q=80" alt="New York"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -292,7 +304,7 @@
           </div>
 
           <!-- Card: Tokyo -->
-          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" onclick="opprettVarsel('Tokyo','NRT','🇯🇵')">
+          <div class="dest-card bg-[#111] border border-[#1e1e1e] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer" data-region="asia" data-month="mai jun" onclick="opprettVarsel('Tokyo','NRT','🇯🇵')">
             <div class="h-44 overflow-hidden relative">
               <img class="dest-img w-full h-full object-cover transition-transform duration-500" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&q=80" alt="Tokyo"/>
               <div class="absolute inset-0 bg-gradient-to-t from-[#111] via-transparent to-transparent"></div>
@@ -387,25 +399,50 @@
 </div>
 
 <script>
+let currentRegion = 'alle';
+let currentMonth = 'alle';
+
+function applyFilters() {
+  document.querySelectorAll('.dest-card').forEach(card => {
+    const regionMatch = currentRegion === 'alle' || card.dataset.region === currentRegion;
+    const months = (card.dataset.month || '').split(' ');
+    const monthMatch = currentMonth === 'alle' || months.includes(currentMonth);
+    card.style.display = (regionMatch && monthMatch) ? '' : 'none';
+  });
+}
+
 function filterRegion(region, btn) {
-  // Update button styles
+  currentRegion = region;
   document.querySelectorAll('.region-btn').forEach(b => {
     b.className = b.className.replace('bg-[#ff6b00] text-white', 'bg-[#111] border border-[#1e1e1e] text-slate-400');
   });
   btn.className = btn.className.replace('bg-[#111] border border-[#1e1e1e] text-slate-400', 'bg-[#ff6b00] text-white');
+  applyFilters();
+}
 
-  // Show/hide cards
-  document.querySelectorAll('.dest-card').forEach(card => {
-    if (region === 'alle' || card.dataset.region === region) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-    }
+function filterMonth(month, btn) {
+  currentMonth = month;
+  document.querySelectorAll('.month-btn').forEach(b => {
+    b.classList.remove('bg-white/10', 'text-white', 'border-white/20');
+    b.classList.add('bg-[#111]', 'text-slate-400', 'border-[#1e1e1e]');
   });
+  btn.classList.add('bg-white/10', 'text-white', 'border-white/20');
+  btn.classList.remove('bg-[#111]', 'text-slate-400', 'border-[#1e1e1e]');
+  applyFilters();
 }
 
 function opprettVarsel(name, code, flag) {
   window.location.href = `varsler.html?to=${encodeURIComponent(name)}&code=${encodeURIComponent(code)}&flag=${encodeURIComponent(flag)}`;
+}
+</script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
 }
 </script>
 </body>

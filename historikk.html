@@ -6,6 +6,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css"/>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -28,10 +29,12 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
-    <div class="p-5 flex items-center gap-3">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <a href="index.html" class="p-5 flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
       </div>
@@ -39,7 +42,7 @@
         <h1 class="text-base font-bold leading-tight text-white">FlyDeals</h1>
         <p class="text-[11px] text-slate-500 font-medium">Varsler deg om flydeals</p>
       </div>
-    </div>
+    </a>
     <nav class="flex-1 px-3 space-y-0.5 mt-1">
       <a href="deals.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-slate-400 hover:text-[#ff6b00] hover:bg-[#ff6b00]/5 transition-colors">
         <span class="ms" style="font-size:18px">local_offer</span>
@@ -85,6 +88,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -95,8 +99,7 @@
         </button>
         <div class="w-px h-6 bg-[#2e2e2e] mx-1"></div>
         <button onclick="window.location.href='login.html'" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1e1e1e] text-sm font-medium text-slate-400 hover:bg-[#111] hover:text-slate-200 transition-colors">
-          <span class="ms" style="font-size:16px">logout</span>
-          Logg ut
+          <span class="ms" style="font-size:16px">logout</span><span class="hidden sm:inline ml-1">Logg ut</span>
         </button>
       </div>
     </div>
@@ -140,7 +143,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xl font-black tracking-tight">New York 🇺🇸</span>
+                <span class="text-xl font-black tracking-tight">New York <span class="fi fi-us fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:2px;border-radius:2px;margin-left:4px;"></span></span>
                 <span class="text-xs font-medium text-slate-500 bg-[#2a2a2a] px-2 py-0.5 rounded-full">JFK</span>
               </div>
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -166,7 +169,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xl font-black tracking-tight">London 🇬🇧</span>
+                <span class="text-xl font-black tracking-tight">London <span class="fi fi-gb fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:2px;border-radius:2px;margin-left:4px;"></span></span>
                 <span class="text-xs font-medium text-slate-500 bg-[#2a2a2a] px-2 py-0.5 rounded-full">LHR</span>
               </div>
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -192,7 +195,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xl font-black tracking-tight">Tokyo 🇯🇵</span>
+                <span class="text-xl font-black tracking-tight">Tokyo <span class="fi fi-jp fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:2px;border-radius:2px;margin-left:4px;"></span></span>
                 <span class="text-xs font-medium text-slate-500 bg-[#2a2a2a] px-2 py-0.5 rounded-full">HND</span>
               </div>
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -218,7 +221,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xl font-black tracking-tight">Alicante 🇪🇸</span>
+                <span class="text-xl font-black tracking-tight">Alicante <span class="fi fi-es fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:2px;border-radius:2px;margin-left:4px;"></span></span>
                 <span class="text-xs font-medium text-slate-500 bg-[#2a2a2a] px-2 py-0.5 rounded-full">ALC</span>
               </div>
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -244,7 +247,7 @@
             </div>
             <div>
               <div class="flex items-center gap-2">
-                <span class="text-xl font-black tracking-tight">Bangkok 🇹🇭</span>
+                <span class="text-xl font-black tracking-tight">Bangkok <span class="fi fi-th fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:2px;border-radius:2px;margin-left:4px;"></span></span>
                 <span class="text-xs font-medium text-slate-500 bg-[#2a2a2a] px-2 py-0.5 rounded-full">BKK</span>
               </div>
               <div class="flex items-center gap-2 mt-0.5 flex-wrap">
@@ -289,6 +292,16 @@
   </div><!-- /max-w-5xl -->
   </main>
 </div>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+}
+</script>
 </body>
 </html>
 

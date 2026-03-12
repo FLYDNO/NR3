@@ -6,6 +6,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css"/>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -29,10 +30,12 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
-    <div class="p-5 flex items-center gap-3">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <a href="index.html" class="p-5 flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
       </div>
@@ -40,7 +43,7 @@
         <h1 class="text-base font-bold leading-tight text-white">FlyDeals</h1>
         <p class="text-[11px] text-slate-500 font-medium">Varsler deg om flydeals</p>
       </div>
-    </div>
+    </a>
     <nav class="flex-1 px-3 space-y-0.5 mt-1">
       <a href="deals.html" class="nav-active flex items-center gap-3 px-3 py-2.5 rounded-r-xl">
         <span class="ms ms-fill" style="font-size:18px">local_offer</span>
@@ -86,6 +89,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -96,8 +100,7 @@
         </button>
         <div class="w-px h-6 bg-[#2e2e2e] mx-1"></div>
         <button onclick="window.location.href='login.html'" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1e1e1e] text-sm font-medium text-slate-400 hover:bg-[#111] hover:text-slate-200 transition-colors">
-          <span class="ms" style="font-size:16px">logout</span>
-          Logg ut
+          <span class="ms" style="font-size:16px">logout</span><span class="hidden sm:inline ml-1">Logg ut</span>
         </button>
       </div>
     </div>
@@ -109,7 +112,7 @@
       </div>
 
       <!-- Airport filters -->
-      <div class="flex flex-wrap gap-2 mb-8">
+      <div class="flex flex-wrap gap-2 mb-3">
         <button onclick="filterDeals('alle',this)" class="filter-btn active px-4 py-2 rounded-full text-sm font-semibold bg-[#ff6b00] text-white transition-all">Alle flyplasser</button>
         <button onclick="filterDeals('OSL',this)" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">🇳🇴 Oslo (OSL)</button>
         <button onclick="filterDeals('BGO',this)" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">🇳🇴 Bergen (BGO)</button>
@@ -119,6 +122,16 @@
         <button onclick="filterDeals('TRF',this)" class="filter-btn px-4 py-2 rounded-full text-sm font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">🇳🇴 Torp (TRF)</button>
       </div>
 
+      <!-- Month filters -->
+      <div class="flex flex-wrap items-center gap-2 mb-8">
+        <span class="flex items-center gap-1 text-xs text-slate-600 font-medium pr-1"><span class="ms" style="font-size:14px">calendar_month</span>Måned:</span>
+        <button onclick="filterMonth('alle',this)" class="month-btn active px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white border border-white/20 transition-all">Alle</button>
+        <button onclick="filterMonth('mar',this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Mars</button>
+        <button onclick="filterMonth('apr',this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">April</button>
+        <button onclick="filterMonth('mai',this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Mai</button>
+        <button onclick="filterMonth('jun',this)" class="month-btn px-3 py-1.5 rounded-full text-xs font-medium bg-[#111] border border-[#1e1e1e] text-slate-400 hover:border-[#ff6b00]/40 transition-all">Juni</button>
+      </div>
+
       <div id="dealsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3"></div>
     </div>
   </main>
@@ -126,21 +139,22 @@
 
 <script>
 const deals = [
-  { from: 'Oslo', fromCode: 'OSL', to: 'Bangkok', toCode: 'BKK', flag: '🇹🇭', price: 2489, orig: 4700, discount: 47, dates: 'Mar–Apr 2026', airline: 'Thai Airways', direct: true, origin: 'OSL' },
-  { from: 'Bergen', fromCode: 'BGO', to: 'London', toCode: 'LHR', flag: '🇬🇧', price: 489, orig: 1020, discount: 52, dates: 'Mars 2026', airline: 'Norwegian', direct: true, origin: 'BGO' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'New York', toCode: 'JFK', flag: '🇺🇸', price: 2890, orig: 4900, discount: 41, dates: 'Apr–Mai 2026', airline: 'SAS', direct: true, origin: 'OSL' },
-  { from: 'Trondheim', fromCode: 'TRD', to: 'Barcelona', toCode: 'BCN', flag: '🇪🇸', price: 699, orig: 1130, discount: 38, dates: 'April 2026', airline: 'Norwegian', direct: false, origin: 'TRD' },
-  { from: 'Stavanger', fromCode: 'SVG', to: 'Amsterdam', toCode: 'AMS', flag: '🇳🇱', price: 549, orig: 980, discount: 44, dates: 'Mars 2026', airline: 'KLM', direct: false, origin: 'SVG' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Tokyo', toCode: 'HND', flag: '🇯🇵', price: 3490, orig: 5720, discount: 39, dates: 'Mai–Jun 2026', airline: 'ANA', direct: false, origin: 'OSL' },
-  { from: 'Tromsø', fromCode: 'TOS', to: 'Reykjavik', toCode: 'KEF', flag: '🇮🇸', price: 890, orig: 1370, discount: 35, dates: 'April 2026', airline: 'Icelandair', direct: true, origin: 'TOS' },
-  { from: 'Torp', fromCode: 'TRF', to: 'Alicante', toCode: 'ALC', flag: '🇪🇸', price: 399, orig: 814, discount: 51, dates: 'Mar–Apr 2026', airline: 'Ryanair', direct: true, origin: 'TRF' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Dubai', toCode: 'DXB', flag: '🇦🇪', price: 1990, orig: 3490, discount: 43, dates: 'April 2026', airline: 'Emirates', direct: true, origin: 'OSL' },
-  { from: 'Bergen', fromCode: 'BGO', to: 'Roma', toCode: 'FCO', flag: '🇮🇹', price: 599, orig: 1110, discount: 46, dates: 'Mars 2026', airline: 'SAS', direct: false, origin: 'BGO' },
-  { from: 'Trondheim', fromCode: 'TRD', to: 'Paris', toCode: 'CDG', flag: '🇫🇷', price: 649, orig: 1082, discount: 40, dates: 'April 2026', airline: 'Air France', direct: false, origin: 'TRD' },
-  { from: 'Oslo', fromCode: 'OSL', to: 'Bali', toCode: 'DPS', flag: '🇮🇩', price: 4290, orig: 6703, discount: 36, dates: 'Mai 2026', airline: 'Qatar Airways', direct: false, origin: 'OSL' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Bangkok', toCode: 'BKK', cc: 'th', flag: '🇹🇭', price: 2489, orig: 4700, discount: 47, dates: 'Mar–Apr 2026', months: ['mar','apr'], airline: 'Thai Airways', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T07:15:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+BKK' },
+  { from: 'Bergen', fromCode: 'BGO', to: 'London', toCode: 'LHR', cc: 'gb', flag: '🇬🇧', price: 489, orig: 1020, discount: 52, dates: 'Mars 2026', months: ['mar'], airline: 'Norwegian', direct: true, origin: 'BGO', type: 'tur-retur', foundAt: '2026-03-10T08:30:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+BGO+to+LHR' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'New York', toCode: 'JFK', cc: 'us', flag: '🇺🇸', price: 2890, orig: 4900, discount: 41, dates: 'Apr–Mai 2026', months: ['apr','mai'], airline: 'SAS', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T06:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+JFK' },
+  { from: 'Trondheim', fromCode: 'TRD', to: 'Barcelona', toCode: 'BCN', cc: 'es', flag: '🇪🇸', price: 699, orig: 1130, discount: 38, dates: 'April 2026', months: ['apr'], airline: 'Norwegian', direct: false, origin: 'TRD', type: 'tur-retur', foundAt: '2026-03-10T09:45:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRD+to+BCN' },
+  { from: 'Stavanger', fromCode: 'SVG', to: 'Amsterdam', toCode: 'AMS', cc: 'nl', flag: '🇳🇱', price: 549, orig: 980, discount: 44, dates: 'Mars 2026', months: ['mar'], airline: 'KLM', direct: false, origin: 'SVG', type: 'tur-retur', foundAt: '2026-03-10T10:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+SVG+to+AMS' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Tokyo', toCode: 'HND', cc: 'jp', flag: '🇯🇵', price: 3490, orig: 5720, discount: 39, dates: 'Mai–Jun 2026', months: ['mai','jun'], airline: 'ANA', direct: false, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-09T14:20:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+HND' },
+  { from: 'Tromsø', fromCode: 'TOS', to: 'Reykjavik', toCode: 'KEF', cc: 'is', flag: '🇮🇸', price: 890, orig: 1370, discount: 35, dates: 'April 2026', months: ['apr'], airline: 'Icelandair', direct: true, origin: 'TOS', type: 'tur-retur', foundAt: '2026-03-09T11:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TOS+to+KEF' },
+  { from: 'Torp', fromCode: 'TRF', to: 'Alicante', toCode: 'ALC', cc: 'es', flag: '🇪🇸', price: 399, orig: 814, discount: 51, dates: 'Mar–Apr 2026', months: ['mar','apr'], airline: 'Ryanair', direct: true, origin: 'TRF', type: 'tur-retur', foundAt: '2026-03-10T08:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRF+to+ALC' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Dubai', toCode: 'DXB', cc: 'ae', flag: '🇦🇪', price: 1990, orig: 3490, discount: 43, dates: 'April 2026', months: ['apr'], airline: 'Emirates', direct: true, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-10T05:30:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+DXB' },
+  { from: 'Bergen', fromCode: 'BGO', to: 'Roma', toCode: 'FCO', cc: 'it', flag: '🇮🇹', price: 599, orig: 1110, discount: 46, dates: 'Mars 2026', months: ['mar'], airline: 'SAS', direct: false, origin: 'BGO', type: 'tur-retur', foundAt: '2026-03-09T16:45:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+BGO+to+FCO' },
+  { from: 'Trondheim', fromCode: 'TRD', to: 'Paris', toCode: 'CDG', cc: 'fr', flag: '🇫🇷', price: 649, orig: 1082, discount: 40, dates: 'April 2026', months: ['apr'], airline: 'Air France', direct: false, origin: 'TRD', type: 'tur-retur', foundAt: '2026-03-09T13:10:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+TRD+to+CDG' },
+  { from: 'Oslo', fromCode: 'OSL', to: 'Bali', toCode: 'DPS', cc: 'id', flag: '🇮🇩', price: 4290, orig: 6703, discount: 36, dates: 'Mai 2026', months: ['mai'], airline: 'Qatar Airways', direct: false, origin: 'OSL', type: 'tur-retur', foundAt: '2026-03-09T09:00:00Z', bookingLink: 'https://www.google.com/travel/flights?q=fly+from+OSL+to+DPS' },
 ];
 
 let currentFilter = 'alle';
+let currentMonthFilter = 'alle';
 
 function filterDeals(filter, btn) {
   currentFilter = filter;
@@ -153,17 +167,38 @@ function filterDeals(filter, btn) {
   renderDeals();
 }
 
+function filterMonth(month, btn) {
+  currentMonthFilter = month;
+  document.querySelectorAll('.month-btn').forEach(b => {
+    b.classList.remove('bg-white/10', 'text-white', 'border-white/20');
+    b.classList.add('bg-[#111]', 'text-slate-400', 'border-[#1e1e1e]');
+  });
+  btn.classList.add('bg-white/10', 'text-white', 'border-white/20');
+  btn.classList.remove('bg-[#111]', 'text-slate-400', 'border-[#1e1e1e]');
+  renderDeals();
+}
+
 function renderDeals() {
-  const filtered = currentFilter === 'alle' ? deals : deals.filter(d => d.origin === currentFilter);
+  let filtered = currentFilter === 'alle' ? deals : deals.filter(d => d.origin === currentFilter);
+  if (currentMonthFilter !== 'alle') {
+    filtered = filtered.filter(d => d.months && d.months.includes(currentMonthFilter));
+  }
+  if (filtered.length === 0) {
+    document.getElementById('dealsGrid').innerHTML = `<div class="col-span-full py-16 text-center text-slate-500"><span class="ms block mb-3" style="font-size:40px">search_off</span><p class="font-semibold text-slate-400">Ingen deals funnet</p><p class="text-sm mt-1">Prøv et annet filter</p></div>`;
+    return;
+  }
   const grid = document.getElementById('dealsGrid');
-  grid.innerHTML = filtered.map((d, i) => `
-    <div onclick="openDeal(${i})" class="deal-card bg-[#111] border border-[#1e1e1e] rounded-xl p-3.5 transition-all duration-200 cursor-pointer" data-idx="${i}">
+  grid.innerHTML = filtered.map(d => `
+    <div onclick="window.open('${d.bookingLink}', '_blank')" class="deal-card bg-[#111] border border-[#1e1e1e] rounded-xl p-3.5 transition-all duration-200 cursor-pointer">
       <div class="flex items-start justify-between mb-2">
         <div>
-          <span class="text-sm font-black">${d.to} ${d.flag}</span>
+          <span class="text-sm font-black">${d.to} <span class="fi fi-${d.cc} fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:1px;border-radius:2px;margin-left:2px;"></span></span>
           <p class="text-[11px] text-slate-500 mt-0.5">${d.from} → ${d.toCode}</p>
         </div>
-        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">-${d.discount}%</span>
+        <div class="flex items-center gap-1.5">
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">-${d.discount}%</span>
+          <span class="ms text-slate-600" style="font-size:14px">open_in_new</span>
+        </div>
       </div>
       <div class="flex items-center gap-1 bg-white/5 border border-white/10 rounded-md px-2 py-1.5 mb-2">
         <span class="ms text-[#ff6b00]" style="font-size:13px">calendar_month</span>
@@ -171,81 +206,31 @@ function renderDeals() {
       </div>
       <p class="text-xl font-black text-[#ff6b00] leading-none">${d.price.toLocaleString('no')} kr</p>
       <p class="text-[11px] text-slate-600 mt-0.5 line-through">${d.orig.toLocaleString('no')} kr</p>
-      <div class="flex items-center gap-1.5 mt-2 pt-2 border-t border-[#1e1e1e] text-[11px] text-slate-500">
-        <span class="ms" style="font-size:13px">airlines</span>
-        <span>${d.airline} · ${d.direct ? 'Direktefly' : '1 stopp'}</span>
+      <div class="flex items-center justify-between mt-2 pt-2 border-t border-[#1e1e1e]">
+        <div class="flex items-center gap-1.5 text-[11px] text-slate-500">
+          <span class="ms" style="font-size:13px">airlines</span>
+          <span>${d.airline} · ${d.direct ? 'Direktefly' : '1 stopp'}</span>
+        </div>
+        <button onclick="event.stopPropagation(); window.location.href='varsler.html?to='+encodeURIComponent('${d.to}')+'&code=${d.toCode}&flag='+encodeURIComponent('${d.flag}')" class="flex items-center gap-1 text-[10px] font-semibold text-slate-500 hover:text-[#ff6b00] transition-colors px-2 py-1 rounded-md hover:bg-[#ff6b00]/10">
+          <span class="ms" style="font-size:12px">notifications</span>Varsel
+        </button>
       </div>
     </div>
   `).join('');
 }
 
-let filteredDealsCache = [];
-
-function openDeal(idx) {
-  const filtered = currentFilter === 'alle' ? deals : deals.filter(d => d.origin === currentFilter);
-  const d = filtered[idx];
-  if (!d) return;
-  document.getElementById('modalFlag').textContent = d.flag;
-  document.getElementById('modalRoute').textContent = d.from + ' (' + d.fromCode + ') → ' + d.to + ' (' + d.toCode + ')';
-  document.getElementById('modalPrice').textContent = d.price.toLocaleString('no') + ' kr';
-  document.getElementById('modalOrig').textContent = d.orig.toLocaleString('no') + ' kr';
-  document.getElementById('modalDiscount').textContent = '-' + d.discount + '%';
-  document.getElementById('modalDates').textContent = d.dates;
-  document.getElementById('modalAirline').textContent = d.airline;
-  document.getElementById('modalStops').textContent = d.direct ? 'Direktefly' : '1 stopp';
-  document.getElementById('dealModal').style.display = 'flex';
-}
-
 renderDeals();
 </script>
-<!-- Deal detail modal -->
-<div id="dealModal" onclick="if(event.target===this)document.getElementById('dealModal').style.display='none'" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center;">
-  <div style="background:#111;border:1px solid #1e1e1e;border-radius:20px;padding:32px;max-width:440px;width:90%;margin:auto;position:relative;">
-    <button onclick="document.getElementById('dealModal').style.display='none'" style="position:absolute;top:16px;right:16px;background:none;border:none;color:rgba(255,255,255,0.4);cursor:pointer;font-size:22px;line-height:1;">✕</button>
-    <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px;">
-      <div style="font-size:48px;line-height:1;" id="modalFlag">🌍</div>
-      <div>
-        <p style="font-size:13px;color:rgba(255,255,255,0.5);font-weight:600;margin-bottom:4px;">FLYRUTE</p>
-        <p style="font-size:16px;font-weight:800;color:white;" id="modalRoute">Oslo → Bangkok</p>
-      </div>
-    </div>
-    <div style="background:#050505;border:1px solid #1e1e1e;border-radius:12px;padding:20px;margin-bottom:20px;">
-      <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:4px;">
-        <span style="font-size:32px;font-weight:900;color:#ff6b00;" id="modalPrice">2 489 kr</span>
-        <span style="font-size:13px;color:rgba(255,255,255,0.35);text-decoration:line-through;" id="modalOrig">4 700 kr</span>
-        <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.2);color:#22c55e;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700;" id="modalDiscount">-47%</span>
-      </div>
-      <p style="font-size:12px;color:rgba(255,255,255,0.4);">per person, tur-retur</p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">PERIODE</p>
-        <p style="font-size:13px;font-weight:700;" id="modalDates">Mar–Apr 2026</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">FLYSELSKAP</p>
-        <p style="font-size:13px;font-weight:700;" id="modalAirline">Thai Airways</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">STOPP</p>
-        <p style="font-size:13px;font-weight:700;" id="modalStops">Direktefly</p>
-      </div>
-      <div style="background:#050505;border:1px solid #1e1e1e;border-radius:10px;padding:12px;">
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);font-weight:600;margin-bottom:4px;">BOOKING</p>
-        <p style="font-size:13px;font-weight:700;color:#22c55e;">Tilgjengelig nå</p>
-      </div>
-    </div>
-    <button onclick="addToAlerts()" style="width:100%;padding:14px;border-radius:12px;background:#ff6b00;color:white;font-weight:800;font-size:15px;border:none;cursor:pointer;margin-bottom:10px;transition:background 0.2s;" onmouseover="this.style.background='#e55f00'" onmouseout="this.style.background='#ff6b00'">
-      Legg til varsel for denne ruten
-    </button>
-    <p style="text-center;font-size:12px;color:rgba(255,255,255,0.3);text-align:center;">Book direkte hos flyselskapet — FlyDeals tar ingen provisjon</p>
-  </div>
 </div>
 
 <script>
-function addToAlerts() {
-  document.getElementById('dealModal').style.display = 'none';
-  window.location.href = 'varsler.html';
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
 }
 </script>
 </body>

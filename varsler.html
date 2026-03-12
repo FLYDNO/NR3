@@ -6,6 +6,7 @@
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flag-icons@7.2.3/css/flag-icons.min.css"/>
 <script>
   tailwind.config = {
     darkMode: "class",
@@ -33,10 +34,12 @@
 </head>
 <body class="text-slate-100 min-h-screen">
 <div class="flex h-screen overflow-hidden">
+<div id="sidebarOverlay" onclick="closeSidebar()" class="fixed inset-0 bg-black/60 z-30 lg:hidden hidden"></div>
+
 
   <!-- Sidebar -->
-  <aside class="w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col">
-    <div class="p-5 flex items-center gap-3">
+  <aside id="sidebar" class="fixed lg:relative inset-y-0 left-0 z-40 w-64 flex-shrink-0 border-r border-[#1e1e1e] bg-[#050505] flex flex-col -translate-x-full lg:translate-x-0 transition-transform duration-300">
+    <a href="index.html" class="p-5 flex items-center gap-3 hover:opacity-80 transition-opacity">
       <div class="w-9 h-9 bg-[#ff6b00] rounded-xl flex items-center justify-center text-white shadow-lg shadow-[#ff6b00]/20 flex-shrink-0">
         <span class="ms" style="font-size:18px">flight_takeoff</span>
       </div>
@@ -44,7 +47,7 @@
         <h1 class="text-base font-bold leading-tight text-white">FlyDeals</h1>
         <p class="text-[11px] text-slate-500 font-medium">Varsler deg om flydeals</p>
       </div>
-    </div>
+    </a>
     <nav class="flex-1 px-3 space-y-0.5 mt-1">
       <a href="deals.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-r-xl text-slate-400 hover:text-[#ff6b00] hover:bg-[#ff6b00]/5 transition-colors">
         <span class="ms" style="font-size:18px">local_offer</span>
@@ -90,6 +93,7 @@
   <main class="flex-1 overflow-y-auto bg-[#050505]">
     <div class="h-14 border-b border-[#1e1e1e] sticky top-0 z-10 bg-[#050505]/90 backdrop-blur flex items-center justify-between px-6">
       <div class="flex items-center gap-2">
+        <button onclick="toggleSidebar()" class="lg:hidden p-2 -ml-1 mr-1 text-slate-400 hover:text-white transition-colors rounded-lg hover:bg-[#111]"><span class="ms" style="font-size:22px">menu</span></button>
         <span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
         <span class="text-sm text-slate-400 font-medium">847 deals funnet hittil</span>
       </div>
@@ -100,8 +104,7 @@
         </button>
         <div class="w-px h-6 bg-[#2e2e2e] mx-1"></div>
         <button onclick="window.location.href='login.html'" class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[#1e1e1e] text-sm font-medium text-slate-400 hover:bg-[#111] hover:text-slate-200 transition-colors">
-          <span class="ms" style="font-size:16px">logout</span>
-          Logg ut
+          <span class="ms" style="font-size:16px">logout</span><span class="hidden sm:inline ml-1">Logg ut</span>
         </button>
       </div>
     </div>
@@ -115,10 +118,7 @@
           <p class="text-slate-400 mt-1">Administrer dine aktive prisvarsler for flyreiser over hele verden.</p>
         </div>
         <button onclick="openModal()" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20 whitespace-nowrap">
-          <span class="ms" style="font-size:20px">add</span>Legg til nytt varsel
-        <button onclick="openAlertModal()" class="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-6 py-3 rounded-xl font-bold transition-all transform active:scale-95 shadow-lg shadow-primary/20">
-          <span class="material-symbols-outlined">add</span>
-          <span>Legg til nytt varsel</span>
+          <span class="ms" style="font-size:20px">add</span> Legg til nytt varsel
         </button>
       </div>
 
@@ -144,59 +144,6 @@
           <span class="ms text-slate-700" style="font-size:48px">notifications_off</span>
           <p class="text-slate-300 font-bold">Ingen treff ennå</p>
           <p class="text-slate-600 text-sm max-w-xs">Når varsler dine matcher nye deals dukker de opp her – synkronisert i sanntid fra databasen.</p>
-        <h3 class="text-white text-2xl font-bold mb-6">Nylige treff</h3>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Hit Card 1 -->
-          <div class="bg-[#111] border border-[#1e1e1e] rounded-xl overflow-hidden hover:border-primary/50 transition-all cursor-pointer">
-            <div class="h-32 w-full relative">
-              <img alt="New York City skyline" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMyQ7Ej_HvzjUGYDimJD_eeZgup8ctf5DG9qJl9dAShyN0auUjybhzlxz3-Sg3-LC-Vp-baSRT4egzQ0yFSoUwmQOf1HXbb_VQwbAnrAJQU6gbCHQR2rXljso05jywLtYhYWnMYbaLbNb-fgYQiDj4j1osnBCRB5aFiAPnQGVHax-qWgVR_QgvKfGE6CKPFbwR3W-WuFl1feLOIZ2ZcPPzdPiXophgnKjQnO2fAmmRufjW2I3a4Q9aNdA8nCrqzbumaKxaOrFYqHOC"/>
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent"></div>
-              <div class="absolute top-2 right-2 bg-green-500 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Tilgjengelig nå</div>
-            </div>
-            <div class="p-4">
-              <div class="flex justify-between items-start mb-1">
-                <div>
-                  <h4 class="font-bold text-white">New York 🇺🇸</h4>
-                  <p class="text-xs text-slate-500">fra 🇳🇴 Oslo (OSL → JFK)</p>
-                </div>
-                <p class="text-primary font-black">4 290 kr</p>
-              </div>
-              <div class="flex items-center gap-2 text-xs text-slate-400 mb-4 mt-2">
-                <span class="material-symbols-outlined text-sm">calendar_month</span>
-                <span>12. Okt - 19. Okt</span>
-              </div>
-              <button onclick="showToast('Åpner tilbud fra Norwegian — OSL → JFK', 'info')" class="w-full py-2 bg-[#2a2a2a] hover:bg-primary text-white text-sm font-bold rounded-lg transition-colors">Se tilbud</button>
-            </div>
-          </div>
-          <!-- Hit Card 2 -->
-          <div class="bg-[#111] border border-[#1e1e1e] rounded-xl overflow-hidden hover:border-primary/50 transition-all cursor-pointer">
-            <div class="h-32 w-full relative">
-              <img alt="London Big Ben" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAumTOdngZO2sKCQWqh5hWkF_O5cqp17fSZ6JtS2zcc9wVotKAMgPn0flGE4gcCBgAXFjRIMiIJctoNM0DDJK6GsQMmyGvvHcrc92_747biMzkJn13JNfQ8p4egYZjiRqS9W7RhiPJ-G3npza1LX4eCs3JgnAyyXo3q_VReXGeH09o-HQBUsTZTA4dRId_vxjCfTBVL_ELPcGtY_DXjWRQyyaTmGzF_1kMZV4Cvalofz8UcPBxrT1MP842wvbsnGAWfmw7GKt4-liYX"/>
-              <div class="absolute inset-0 bg-gradient-to-t from-[#111] to-transparent"></div>
-              <div class="absolute top-2 right-2 bg-slate-700 text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase">Utgått</div>
-            </div>
-            <div class="p-4 opacity-75">
-              <div class="flex justify-between items-start mb-1">
-                <div>
-                  <h4 class="font-bold text-white">London 🇬🇧</h4>
-                  <p class="text-xs text-slate-500">fra 🇳🇴 Bergen (BGO → LHR)</p>
-                </div>
-                <p class="text-slate-400 font-black">980 kr</p>
-              </div>
-              <div class="flex items-center gap-2 text-xs text-slate-400 mb-4 mt-2">
-                <span class="material-symbols-outlined text-sm">calendar_month</span>
-                <span>05. Nov - 08. Nov</span>
-              </div>
-              <button class="w-full py-2 bg-[#2a2a2a] text-slate-500 text-sm font-bold rounded-lg cursor-not-allowed">Ikke tilgjengelig</button>
-            </div>
-          </div>
-          <!-- Add New -->
-          <div onclick="openAlertModal()" class="border-2 border-dashed border-[#1e1e1e] rounded-xl flex flex-col items-center justify-center p-6 hover:bg-white/5 transition-colors cursor-pointer group">
-            <div class="w-12 h-12 rounded-full border-2 border-dashed border-[#1e1e1e] flex items-center justify-center text-slate-500 group-hover:border-primary group-hover:text-primary mb-3">
-              <span class="material-symbols-outlined">add</span>
-            </div>
-            <p class="text-slate-400 font-medium group-hover:text-slate-200">Opprett nytt søk</p>
-          </div>
         </div>
       </div>
 
@@ -258,6 +205,9 @@
     <div class="px-6 pb-6 flex gap-3">
       <button onclick="closeModal()" class="flex-1 py-2.5 rounded-xl border border-[#1e1e1e] text-slate-400 hover:text-white font-semibold text-sm transition-colors">Avbryt</button>
       <button onclick="submitAlert()" class="flex-1 py-2.5 rounded-xl bg-primary hover:bg-primary/90 text-white font-bold text-sm transition-colors shadow-lg shadow-primary/20">Opprett varsel</button>
+    </div>
+  </div>
+</div>
 <!-- Toast -->
 <div id="toast" style="position:fixed;bottom:24px;right:24px;z-index:200;display:flex;align-items:center;gap:10px;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;box-shadow:0 8px 32px rgba(0,0,0,0.4);background:#111;border:1px solid rgba(34,197,94,0.3);color:#22c55e;transform:translateY(80px);opacity:0;transition:all 0.3s cubic-bezier(0.34,1.56,0.64,1);pointer-events:none;">
   <span class="material-symbols-outlined" style="font-size:18px" id="toastIcon">check_circle</span>
@@ -372,35 +322,37 @@ const AIRPORT_NAMES = {
   SVG: 'Stavanger', TOS: 'Tromsø', TRF: 'Torp', KRS: 'Kristiansand'
 };
 
+const CC_MAP = {
+  BKK:'th', LHR:'gb', JFK:'us', BCN:'es', AMS:'nl', HND:'jp',
+  KEF:'is', ALC:'es', DXB:'ae', FCO:'it', CDG:'fr', DPS:'id',
+  MAD:'es', ATH:'gr', DUB:'ie', IST:'tr', CPH:'dk', ARN:'se',
+  HEL:'fi', MUC:'de', ZRH:'ch', VIE:'at', OSL:'no', BGO:'no',
+  TRD:'no', SVG:'no', TOS:'no', TRF:'no'
+};
+
 const MONTHS = ['Jan','Feb','Mar','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Des'];
 
 let alerts = JSON.parse(localStorage.getItem('flydeals_alerts') || '[]');
 let selectedMonths = [];
+let pendingDeleteId = null;
 
 function saveAlerts() {
   localStorage.setItem('flydeals_alerts', JSON.stringify(alerts));
 }
 
-function renderAlerts() {
-  const active = alerts.filter(a => a.active).length;
-let pendingDeleteRowId = null;
-
-function showToast(msg, type) {
-  const t = document.getElementById('toast');
-  const icon = document.getElementById('toastIcon');
-  const colors = { success: ['rgba(34,197,94,0.3)', '#22c55e', 'check_circle'], error: ['rgba(239,68,68,0.3)', '#ef4444', 'error'], info: ['rgba(255,107,0,0.3)', '#ff6b00', 'info'] };
-  const c = colors[type] || colors.success;
-  t.style.border = '1px solid ' + c[0];
-  t.style.color = c[1];
-  icon.textContent = c[2];
-  document.getElementById('toastMsg').textContent = msg;
-  t.style.transform = 'translateY(0)';
-  t.style.opacity = '1';
-  setTimeout(() => { t.style.transform = 'translateY(80px)'; t.style.opacity = '0'; }, 3500);
+function showToast(msg, color) {
+  const t = document.createElement('div');
+  const bg = color === 'green' ? 'rgba(34,197,94,0.15)' : 'rgba(239,68,68,0.15)';
+  const border = color === 'green' ? 'rgba(34,197,94,0.3)' : 'rgba(239,68,68,0.3)';
+  const text = color === 'green' ? '#86efac' : '#fca5a5';
+  t.style.cssText = `position:fixed;bottom:24px;right:24px;z-index:9999;background:${bg};border:1px solid ${border};color:${text};padding:12px 20px;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;box-shadow:0 8px 32px rgba(0,0,0,0.4);pointer-events:none;`;
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
 }
 
-function updateCount() {
-  const active = document.querySelectorAll('tbody tr input[type="checkbox"]:checked').length;
+function renderAlerts() {
+  const active = alerts.filter(a => a.active).length;
   document.getElementById('activeCount').textContent = active;
 
   const container = document.getElementById('alertsContainer');
@@ -418,69 +370,40 @@ function updateCount() {
   }
 
   const rows = alerts.map(a => `
-    <tr id="alert-${a.id}" class="${a.active ? 'hover:bg-white/5' : 'opacity-40'} transition-all duration-300">
-      <td class="px-6 py-5">
-        <div class="flex items-center gap-3">
-          <div class="p-2 ${a.active ? 'bg-primary/10 text-primary' : 'bg-white/5 text-slate-500'} rounded-lg flex-shrink-0">
-            <span class="ms text-xl">flight_takeoff</span>
-          </div>
-          <div>
-            <p class="${a.active ? 'text-white' : 'text-slate-400'} font-bold">${a.toFlag} ${a.to} <span class="text-slate-500 font-normal text-xs">(${a.toCode})</span></p>
-            <p class="text-xs text-slate-500">fra 🇳🇴 ${AIRPORT_NAMES[a.fromCode] || a.fromCode} (${a.fromCode})</p>
-          </div>
-        </div>
-      </td>
-      <td class="px-6 py-5">
-        <div class="flex justify-center">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-white/5 text-slate-300 border border-white/10">
-            <span class="ms" style="font-size:13px">calendar_month</span>${a.months.length ? a.months.join(' · ') : 'Alle'}
+    <div id="alert-${a.id}" class="flex items-center gap-3 p-4 border-b border-[#1e1e1e] last:border-0 ${a.active ? '' : 'opacity-40'} transition-all duration-300">
+      <div class="p-2 ${a.active ? 'bg-primary/10 text-primary' : 'bg-white/5 text-slate-500'} rounded-lg flex-shrink-0">
+        <span class="ms" style="font-size:20px">flight_takeoff</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <p class="${a.active ? 'text-white' : 'text-slate-400'} font-bold text-sm"><span class="fi fi-${CC_MAP[a.toCode] || 'un'} fis" style="width:1em;height:0.75em;display:inline-block;vertical-align:middle;margin-bottom:1px;border-radius:2px;margin-right:4px;"></span>${a.to} <span class="text-slate-500 font-normal text-xs">(${a.toCode})</span></p>
+        <p class="text-xs text-slate-500 mb-1.5">fra 🇳🇴 ${AIRPORT_NAMES[a.fromCode] || a.fromCode} (${a.fromCode})</p>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-white/5 text-slate-300 border border-white/10">
+            <span class="ms" style="font-size:11px">calendar_month</span>${a.months.length ? a.months.join(' \u00b7 ') : 'Alle'}
           </span>
+          <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold ${a.active ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-white/5 text-slate-500 border border-white/5'}">≥${a.minDiscount}%</span>
         </div>
-      </td>
-      <td class="px-6 py-5">
-        <div class="flex justify-center">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold ${a.active ? 'bg-primary/10 text-primary border border-primary/20' : 'bg-white/5 text-slate-500 border border-white/5'}">
-            ≥${a.minDiscount}%
-          </span>
-        </div>
-      </td>
-      <td class="px-6 py-5">
-        <div class="flex justify-center">
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input ${a.active ? 'checked' : ''} class="sr-only peer" type="checkbox" onchange="toggleAlert('${a.id}', this.checked)"/>
-            <div class="toggle-track w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-          </label>
-        </div>
-      </td>
-      <td class="px-6 py-5 text-right">
-        <button onclick="askDelete('${a.id}')" class="text-slate-400 hover:text-red-500 transition-colors p-2 rounded-lg hover:bg-[#2a2a2a]">
-          <span class="ms">delete</span>
+      </div>
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input ${a.active ? 'checked' : ''} class="sr-only peer" type="checkbox" onchange="toggleAlert('${a.id}', this.checked)"/>
+          <div class="toggle-track w-11 h-6 bg-[#2a2a2a] peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+        </label>
+        <button onclick="askDelete('${a.id}')" class="text-slate-400 hover:text-red-500 transition-colors p-1.5 rounded-lg hover:bg-[#2a2a2a]">
+          <span class="ms" style="font-size:18px">delete</span>
         </button>
-      </td>
-    </tr>`).join('');
+      </div>
+    </div>`).join('');
 
   container.innerHTML = `
     <div class="bg-[#111] rounded-2xl border border-[#1e1e1e] overflow-hidden shadow-2xl">
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-white/5 border-b border-[#1e1e1e]">
-              <th class="px-6 py-4 text-slate-300 text-sm font-semibold">Rute</th>
-              <th class="px-6 py-4 text-slate-300 text-sm font-semibold text-center">Reisemåned</th>
-              <th class="px-6 py-4 text-slate-300 text-sm font-semibold text-center">Rabattgrense</th>
-              <th class="px-6 py-4 text-slate-300 text-sm font-semibold text-center">Status</th>
-              <th class="px-6 py-4 text-slate-300 text-sm font-semibold text-right">Slett</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-[#1e1e1e]">${rows}</tbody>
-        </table>
-      </div>
+      ${rows}
     </div>`;
 }
 
 function openModal(prefill) {
   selectedMonths = [];
-  document.getElementById('destInput').value = prefill ? `${prefill.flag} ${prefill.name}` : '';
+  document.getElementById('destInput').value = prefill ? (prefill.flag + ' ' + prefill.name) : '';
   document.getElementById('destCode').value = prefill ? (prefill.code || '') : '';
   document.getElementById('destFlag').value = prefill ? (prefill.flag || '') : '';
   document.getElementById('fromAirport').value = 'OSL';
@@ -488,11 +411,9 @@ function openModal(prefill) {
   document.getElementById('discountDisplay').textContent = '50%';
   document.getElementById('destSuggestions').innerHTML = '';
   document.getElementById('destInput').style.borderColor = '';
-
   document.getElementById('monthChips').innerHTML = MONTHS.map(m =>
-    `<button type="button" class="month-chip px-3 py-1 rounded-full text-xs font-semibold border border-[#2a2a2a] text-slate-400 hover:border-primary/40 transition-all" onclick="toggleMonth('${m}', this)">${m}</button>`
+    '<button type="button" class="month-chip px-3 py-1 rounded-full text-xs font-semibold border border-[#2a2a2a] text-slate-400 hover:border-primary/40 transition-all" onclick="toggleMonth(\'' + m + '\', this)">' + m + '</button>'
   ).join('');
-
   document.getElementById('modal').classList.remove('hidden');
   setTimeout(() => document.getElementById('destInput').focus(), 50);
 }
@@ -508,12 +429,10 @@ function filterDest(q) {
     d.name.toLowerCase().includes(q.toLowerCase()) || d.code.toLowerCase().includes(q.toLowerCase())
   ).slice(0, 8);
   box.innerHTML = results.map(d =>
-    `<button type="button" onmousedown="selectDest('${d.name}','${d.code}','${d.flag}')"
-      class="w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-white/5 text-left transition-colors">
-      <span class="text-xl">${d.flag}</span>
-      <span class="font-medium text-slate-100">${d.name}</span>
-      <span class="text-slate-500 ml-auto text-xs">${d.code}</span>
-    </button>`
+    '<button type="button" onmousedown="selectDest(\'' + d.name + '\',\'' + d.code + '\',\'' + d.flag + '\')" class="w-full flex items-center gap-3 px-4 py-2.5 text-sm hover:bg-white/5 text-left transition-colors">' +
+    '<span class="text-xl">' + d.flag + '</span>' +
+    '<span class="font-medium text-slate-100">' + d.name + '</span>' +
+    '<span class="text-slate-500 ml-auto text-xs">' + d.code + '</span></button>'
   ).join('');
 }
 
@@ -547,7 +466,6 @@ function submitAlert() {
     return;
   }
   if (!code) {
-    // If user typed freely without selecting, try to match
     const match = DESTINATIONS.find(d => d.name.toLowerCase() === name.toLowerCase());
     if (!match) {
       document.getElementById('destInput').style.borderColor = '#ef4444';
@@ -573,104 +491,56 @@ function submitAlert() {
   saveAlerts();
   renderAlerts();
   closeModal();
+  showToast('Varsel opprettet! ✓', 'green');
 }
 
 function askDelete(id) {
+  pendingDeleteId = id;
   document.getElementById('confirmModal').classList.remove('hidden');
-  document.getElementById('confirmDeleteBtn').onclick = () => confirmDelete(id);
 }
 
 function closeConfirm() {
   document.getElementById('confirmModal').classList.add('hidden');
+  pendingDeleteId = null;
 }
 
-function confirmDelete(id) {
-  alerts = alerts.filter(a => a.id !== id);
-  saveAlerts();
-  renderAlerts();
-  closeConfirm();
+function confirmDelete() {
+  if (pendingDeleteId) {
+    alerts = alerts.filter(a => a.id !== pendingDeleteId);
+    saveAlerts();
+    renderAlerts();
+    closeConfirm();
+    showToast('Varsel slettet', 'red');
+  }
 }
 
 function toggleAlert(id, active) {
   const a = alerts.find(x => x.id === id);
-  if (a) { a.active = active; saveAlerts(); renderAlerts(); }
+  if (a) {
+    a.active = active;
+    saveAlerts();
+    renderAlerts();
+    showToast(active ? 'Varsel aktivert ✓' : 'Varsel deaktivert', active ? 'green' : 'red');
+  }
 }
 
 window.addEventListener('DOMContentLoaded', () => {
   renderAlerts();
-  // Pre-fill from oppdag.html "Opprett varsel" buttons
   const p = new URLSearchParams(window.location.search);
   if (p.get('to')) {
     openModal({ name: p.get('to'), code: p.get('code') || '', flag: p.get('flag') || '' });
   }
-function openAlertModal(dest, code, from, price) {
-  document.getElementById('alertModalTitle').textContent = dest ? 'Rediger varsel' : 'Legg til nytt varsel';
-  if (dest) {
-    document.getElementById('alertTo').value = dest + ' (' + code + ')';
-    document.getElementById('alertPrice').value = price;
-    if (from) document.getElementById('alertFrom').value = from;
-  } else {
-    document.getElementById('alertTo').value = '';
-    document.getElementById('alertPrice').value = '';
-  }
-  document.getElementById('alertModal').style.display = 'flex';
-}
-
-function closeAlertModal() {
-  document.getElementById('alertModal').style.display = 'none';
-}
-
-function saveAlert() {
-  const to = document.getElementById('alertTo').value.trim();
-  const price = document.getElementById('alertPrice').value.trim();
-  if (!to) { showToast('Vennligst oppgi en destinasjon.', 'error'); return; }
-  if (!price || isNaN(price)) { showToast('Vennligst oppgi en gyldig makspris.', 'error'); return; }
-  closeAlertModal();
-  showToast('Varsel lagret for ' + to + '.', 'success');
-  updateCount();
-}
-
-function editAlert(dest, code, from, price) {
-  openAlertModal(dest, code, from, price);
-}
-
-function deleteAlert(rowId, name) {
-  pendingDeleteRowId = rowId;
-  document.getElementById('deleteAlertName').textContent = 'Vil du slette varselet for ' + name + '?';
-  document.getElementById('deleteAlertModal').style.display = 'flex';
-}
-
-function closeDeleteAlertModal() {
-  document.getElementById('deleteAlertModal').style.display = 'none';
-  pendingDeleteRowId = null;
-}
-
-function confirmDeleteAlert() {
-  if (pendingDeleteRowId) {
-    const row = document.getElementById(pendingDeleteRowId);
-    if (row) row.remove();
-    updateCount();
-    showToast('Varselet er slettet.', 'success');
-  }
-  closeDeleteAlertModal();
-}
-
-// Wire up edit/delete buttons to rows
-document.addEventListener('DOMContentLoaded', function() {
-  updateCount();
-  const rowData = [
-    { id: 'row-1', dest: 'New York', code: 'JFK', from: 'OSL', price: '5500' },
-    { id: 'row-2', dest: 'London', code: 'LHR', from: 'BGO', price: '1200' },
-    { id: 'row-3', dest: 'Dubai', code: 'DXB', from: 'SVG', price: '4800' }
-  ];
-  rowData.forEach(function(r) {
-    const row = document.getElementById(r.id);
-    if (!row) return;
-    const btns = row.querySelectorAll('td:last-child button');
-    if (btns[0]) btns[0].onclick = function() { editAlert(r.dest, r.code, r.from, r.price); };
-    if (btns[1]) btns[1].onclick = function() { deleteAlert(r.id, r.dest + ' (' + r.code + ')'); };
-  });
 });
+</script>
+<script>
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.toggle('hidden');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.add('-translate-x-full');
+  document.getElementById('sidebarOverlay').classList.add('hidden');
+}
 </script>
 </body>
 </html>

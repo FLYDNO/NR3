@@ -405,7 +405,7 @@
     .stats {
       padding: 60px 0;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: none;
     }
 
     .stats-grid {
@@ -475,7 +475,7 @@
     /* Live deals strip */
     .deals-strip {
       padding: 70px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: none;
     }
 
     .deals-cards {
@@ -950,9 +950,27 @@
       }
 
       .how-grid,
-      .features-grid,
-      .deals-cards {
+      .features-grid {
         grid-template-columns: 1fr;
+      }
+
+      .deals-cards {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 12px;
+        padding-bottom: 8px;
+        -webkit-overflow-scrolling: touch;
+        margin-left: -4px;
+        margin-right: -4px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
+      .deals-cards .deal-card {
+        flex: 0 0 78vw;
+        max-width: 300px;
+        scroll-snap-align: start;
       }
 
       .stats-grid {
@@ -969,9 +987,19 @@
       }
     }
 
+    .nav-mobile-cta {
+      display: none;
+    }
+
     @media (max-width: 640px) {
       .nav-links {
         display: none;
+      }
+
+      .nav-mobile-cta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .section-title {
@@ -1007,8 +1035,8 @@
     .ticker-wrap {
       overflow: hidden;
       padding: 15px 0;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: none;
+      border-bottom: none;
       background: #0a0a0a;
       position: relative;
     }
@@ -1093,6 +1121,10 @@
       <div class="nav-links">
         <a href="deals.html">Deals</a>
         <a href="#how">Hvordan det fungerer</a>
+        <a href="login.html" class="nav-login">Logg inn</a>
+        <a href="login.html" class="nav-btn">Prøv gratis</a>
+      </div>
+      <div class="nav-mobile-cta">
         <a href="login.html" class="nav-login">Logg inn</a>
         <a href="login.html" class="nav-btn">Prøv gratis</a>
       </div>
@@ -1221,13 +1253,11 @@
   </section>
 
   <!-- EARTH SECTION -->
-  <section style="position:relative;height:620px;overflow:hidden;margin:0;">
-    <video autoplay muted loop playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-      <source src="EARTH 3D VIDEO 15MB.mp4" type="video/mp4">
-    </video>
+  <section style="position:relative;height:620px;overflow:hidden;margin:-2px 0 0;">
+    <img src="iStock-1370838389.jpg" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 42%;filter:brightness(0.85);">
     <!-- Fades -->
     <div
-      style="position:absolute;inset:0;background:linear-gradient(to bottom, #050505 0%, transparent 18%, transparent 82%, #050505 100%);pointer-events:none;">
+      style="position:absolute;inset:0;background:linear-gradient(to bottom, #050505 0%, transparent 16%, transparent 80%, #050505 100%);pointer-events:none;">
     </div>
     <div
       style="position:absolute;inset:0;background:linear-gradient(to right, rgba(5,5,5,0.6) 0%, transparent 18%, transparent 82%, rgba(5,5,5,0.6) 100%);pointer-events:none;">
@@ -1246,24 +1276,8 @@
         <h2
           style="font-family:'DM Sans',sans-serif;font-size:44px;font-weight:700;color:#fff;letter-spacing:-1.5px;line-height:1.1;margin:0 0 16px;">
           Vi finner deals over<br>hele verden</h2>
-        <p style="font-family:'DM Sans',sans-serif;font-size:17px;color:rgba(255,255,255,0.65);margin:0 0 32px;">Fra
+        <p style="font-family:'DM Sans',sans-serif;font-size:17px;color:#fff;margin:0;">Fra
           Skandinavia til 237+ destinasjoner</p>
-        <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;">
-          <div
-            style="display:inline-flex;align-items:center;gap:8px;background:rgba(5,5,5,0.82);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.85);backdrop-filter:blur(12px);">
-            <span
-              style="width:7px;height:7px;background:#22c55e;border-radius:50%;box-shadow:0 0 8px #22c55e;animation:pulse 2s infinite;display:inline-block;"></span>
-            Overvåker kontinuerlig
-          </div>
-          <div
-            style="display:inline-flex;align-items:center;gap:8px;background:rgba(5,5,5,0.82);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.85);backdrop-filter:blur(12px);">
-            ✅ 6 norske flyplasser
-          </div>
-          <div
-            style="display:inline-flex;align-items:center;gap:8px;background:rgba(5,5,5,0.82);border:1px solid rgba(255,255,255,0.1);border-radius:100px;padding:10px 18px;font-family:'DM Sans',sans-serif;font-size:13px;color:rgba(255,255,255,0.85);backdrop-filter:blur(12px);">
-            🌍 237+ destinasjoner
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -1290,7 +1304,7 @@
             </div>
             <div class="deal-card-discount">-38%</div>
           </div>
-          <a href="deals.html" class="deal-card-book">
+          <a href="login.html" class="deal-card-book">
             Se reisemuligheter
             <span class="ms" style="font-size:14px">arrow_forward</span>
           </a>
@@ -1310,7 +1324,7 @@
             </div>
             <div class="deal-card-discount">-44%</div>
           </div>
-          <a href="deals.html" class="deal-card-book">
+          <a href="login.html" class="deal-card-book">
             Se reisemuligheter
             <span class="ms" style="font-size:14px">arrow_forward</span>
           </a>
@@ -1330,14 +1344,14 @@
             </div>
             <div class="deal-card-discount">-31%</div>
           </div>
-          <a href="deals.html" class="deal-card-book">
+          <a href="login.html" class="deal-card-book">
             Se reisemuligheter
             <span class="ms" style="font-size:14px">arrow_forward</span>
           </a>
         </div>
       </div>
       <div style="text-align:center;margin-top:28px">
-        <a href="deals.html" class="btn-outline" style="display:inline-flex">Se alle deals →</a>
+        <a href="login.html" class="btn-outline" style="display:inline-flex">Se alle deals →</a>
       </div>
     </div>
   </section>
